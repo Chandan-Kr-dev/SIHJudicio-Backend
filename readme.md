@@ -1,14 +1,14 @@
-## Backend - Judicio - SIH Finale Project
+# Backend - Judicio - SIH Finale Project
 
 Judicio is the website to automate the bail process in the indian judicial systems
 
-# Tech Stacks 
+## Tech Stacks 
 1. Express
 2. Nodejs
 3. Mongo DB
 4. JWT
 
-# Implementation
+## Implementation
 
 clone this repository
 
@@ -29,4 +29,4 @@ Run the Server
 ```
     npm run start
 ```
-# Feel Free to contribute to my project
+### Feel Free to contribute to my project
