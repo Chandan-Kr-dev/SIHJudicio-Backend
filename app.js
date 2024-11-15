@@ -1,9 +1,12 @@
 import express from "express";
 import cors from "cors";
 import { connectDb } from "./db/index.js";
+import authRouter from "./routes/authRoutes.js";
+import bodyParser from "body-parser";
+import caseRouter from "./routes/caseRoutes.js";
 
 const app = express();
-app.use(express.json());
+app.use(bodyParser.json());
 app.use(
   cors({
     origin: "*",
@@ -19,6 +22,12 @@ app.get("/", (req, res) => {
   res.send("App is Working !!");
 });
 
-app.listen(5000, (req, res) => {
+//Routes
+app.use('/auth',authRouter)
+
+app.use('/api/cases',caseRouter)
+
+
+app.listen(5000, () => {
   console.log("Server is running on port 5000");
 });

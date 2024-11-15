@@ -1,5 +1,8 @@
 import bcrypt from "bcryptjs";
-import { Users } from "../models/user.models";
+import { Users } from "../models/user.models.js";
+import jwt from 'jsonwebtoken'
+import dotenv from 'dotenv'
+dotenv.config()
 
 const SignUp = async (req, res) => {
     const { Name, Email, Phone, Password } = req.body;
@@ -15,10 +18,10 @@ const SignUp = async (req, res) => {
           Email: Email,
           Name: Name,
           Phone: Phone,
-          Password: hasedpassword,
+          password: hasedpassword,
           
         }).then(() => {
-          res.json("Judge has been signed up successfully..");
+          res.json("You are signed in successfully..");
         });
       }
     } catch (error) {
@@ -28,8 +31,8 @@ const SignUp = async (req, res) => {
   };
   
 
-const SignUpJudge = async (req, res) => {
-  const { Name, Email, Phone, Password, userRole } = req.body;
+const SignUpOfficials = async (req, res) => {
+  const { UserName,Name, Email, Phone, Password,Liscensenumber,AssignedCourt,userRole } = req.body;
 
   console.log(req.body);
   try {
@@ -40,12 +43,17 @@ const SignUpJudge = async (req, res) => {
       const hasedpassword = await bcrypt.hash(Password, 10);
       Users.create({
         Email: Email,
-        Name: Name,
+        UserName: UserName,
         Phone: Phone,
-        Password: hasedpassword,
-        userRole: "Judge",
+        password: hasedpassword,
+        profileInfo:{
+          Name:Name,
+          LiscenseNumber:Liscensenumber,
+          AssignedCourt:AssignedCourt
+        },
+        userRole: userRole,
       }).then(() => {
-        res.json("Judge has been signed up successfully..");
+        res.json(`${userRole} has been signed up successfully..`);
       });
     }
   } catch (error) {
@@ -54,83 +62,7 @@ const SignUpJudge = async (req, res) => {
   }
 };
 
-const SignUpLawyers = async (req, res) => {
-  const { Name, Email, Phone, Password, userRole } = req.body;
 
-  console.log(req.body);
-  try {
-    const user = await Users.findOne({ Email: Email });
-    if (user) {
-      res.json(`User already exists as ${user.userRole} ... Please Login `);
-    } else {
-      const hasedpassword = await bcrypt.hash(Password, 10);
-      Users.create({
-        Email: Email,
-        Name: Name,
-        Phone: Phone,
-        Password: hasedpassword,
-        userRole: "Lawyer",
-      }).then(() => {
-        res.json("Judge has been signed up successfully..");
-      });
-    }
-  } catch (error) {
-    console.log(error);
-    res.json(error.message);
-  }
-};
-
-const SignUpClerk = async (req, res) => {
-  const { Name, Email, Phone, Password, userRole } = req.body;
-
-  console.log(req.body);
-  try {
-    const user = await Users.findOne({ Email: Email });
-    if (user) {
-      res.json(`User already exists as ${user.userRole} ... Please Login `);
-    } else {
-      const hasedpassword = await bcrypt.hash(Password, 10);
-      Users.create({
-        Email: Email,
-        Name: Name,
-        Phone: Phone,
-        Password: hasedpassword,
-        userRole: "Clerk",
-      }).then(() => {
-        res.json("Judge has been signed up successfully..");
-      });
-    }
-  } catch (error) {
-    console.log(error);
-    res.json(error.message);
-  }
-};
-
-const SignUpBailOfficer = async (req, res) => {
-  const { Name, Email, Phone, Password, userRole } = req.body;
-
-  console.log(req.body);
-  try {
-    const user = await Users.findOne({ Email: Email });
-    if (user) {
-      res.json(`User already exists as ${user.userRole} ... Please Login `);
-    } else {
-      const hasedpassword = await bcrypt.hash(Password, 10);
-      Users.create({
-        Email: Email,
-        Name: Name,
-        Phone: Phone,
-        Password: hasedpassword,
-        userRole: "BailOfficer",
-      }).then(() => {
-        res.json("Judge has been signed up successfully..");
-      });
-    }
-  } catch (error) {
-    console.log(error);
-    res.json(error.message);
-  }
-};
 
 
 const login=async(req,res)=>{
@@ -141,8 +73,10 @@ const login=async(req,res)=>{
         const user=await Users.findOne({Email:Email});
         if(user){
             if(user.userRole ===userRole){
-                const isMacth=await bcrypt.compare(user.password,Password)
+                const isMacth=await bcrypt.compare(Password,user.password)
                 if(isMacth){
+                  // const token=jwt.sign({id:user._id , role: user.userRole},process.env.JWT_SECRET,{expiresIn : "1h"})
+                  // res.status(200).json({token})
                     res.json({message:"Success",
                         user
                     })
@@ -161,3 +95,4 @@ const login=async(req,res)=>{
     }
 }
 
+export default {SignUp,SignUpOfficials,login}

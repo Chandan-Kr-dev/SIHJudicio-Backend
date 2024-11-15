@@ -9,11 +9,9 @@ export const connectDb=async()=>{
         if(connectionHost){
             console.log("Mongoose connection Successfull",connectionHost.connection.host)
         }
-        else{
-            console.error("MongoDb Error ")
-        }
+        
     } catch (error) {
         console.error('Mongodb conncetion error',error)
-        
+        process.exit(1)
     }
 }
