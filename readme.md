@@ -3,16 +3,18 @@
 Judicio is the website to automate the bail process in the indian judicial systems
 
 # Tech Stacks 
--> Express
--> Nodejs
-->Mongo DB
-->JWT
+1. Express
+2. Nodejs
+3. Mongo DB
+4. JWT
 
 # Implementation
 
 clone this repository
 
-```git clone https://github.com/Chandan-Kr-dev/SIHJudicio-Backend.git
+```
+    git clone https://github.com/Chandan-Kr-dev/SIHJudicio-Backend.git
+
 ```
 
 
@@ -20,7 +22,7 @@ clone this repository
 2. Create a new Project 
 3. Create a cluster 
 4. Create a env file in your root directory 
-5. Chnage the .env.smaple file MONGODB_URL to your cluster url
+5. Chnage the .env.smaple file MONGODB_URL to your cluster url and paste it in the .env file
 
 Run the Server
 
