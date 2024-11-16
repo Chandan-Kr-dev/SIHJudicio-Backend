@@ -1,8 +1,9 @@
 import express from 'express';
-import { registerCase } from '../controllers/CaseControllers.js';
+import crimeControllers from '../controllers/crimeControllers.js';
 
 const caseRouter=express.Router()
 
-caseRouter.post('/registercases',registerCase)
+caseRouter.post('/addcrime',crimeControllers.addCase)
+caseRouter.get('/crimes',crimeControllers.getcase)
 
 export default caseRouter
