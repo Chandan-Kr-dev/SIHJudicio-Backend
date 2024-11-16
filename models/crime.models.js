@@ -6,11 +6,15 @@ const CaseSchema=new mongoose.Schema({
         type:String,
         required:true
     },
-    CrimeDescription:{
+    Section:{
         type:String,
         required:true
     },
     CrimeCategory:{
+        type:String,
+        required:true
+    },
+    PrisonDuration:{
         type:String,
         required:true
     },
@@ -19,8 +23,10 @@ const CaseSchema=new mongoose.Schema({
         required:true,
         default:{
             Bailable:"",
-            BailAmount:"",
-            BailCondition:"",
+            MinBailAmount:"",
+            MaxBailAmount:"",
+           
+            BailConditions:"",
         }
     },
     Status:{

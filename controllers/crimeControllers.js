@@ -3,7 +3,7 @@ import { crimes } from "../models/crime.models.js";
 import { Users } from "../models/user.models.js";
 
 const addCase = async (req, res) => {
-  const { Crime, CrimeDesc, CrimeCategory, BailAmt, BailConditions, Bailable } =
+  const { Crime, Section, CrimeCategory,PrisonDuration, MinBailAmt,MaxBailAmount, BailConditions, Bailable,BailCrieteria } =
     req.body;
 
   console.log(req.body);
@@ -11,13 +11,16 @@ const addCase = async (req, res) => {
   try {
     await crimes
       .create({
-        Crime: CrimeCategory,
-        CrimeDescription: CrimeDesc,
+        Crime: Crime,
+        Section: Section,
         CrimeCategory: CrimeCategory,
+        PrisonDuration:PrisonDuration,
         BailDetails: {
           Bailable: Bailable,
-          BailAmount: BailAmt,
+          MinBailAmount: MinBailAmt,
+          MaxBailAmount:MaxBailAmount,
           BailConditions: BailConditions,
+        
         },
       })
       .then(() => {
@@ -29,6 +32,19 @@ const addCase = async (req, res) => {
   }
 };
 
+const verifyCrime=async(req,res)=>{
+  const {Crimeid}=req.body;
+  try {
+    await crimes.findByIdAndUpdate(Crimeid,{Status:"Verified"})
+    .then(()=>{
+      res.json("Crime verified successfully")
+    })
+  } catch (error) {
+    console.error(error.message);
+    res.json(error.message);
+  }
+}
+
 const getcase = async (req, res) => {
   try {
     const crime = await crimes.find();
@@ -38,4 +54,4 @@ const getcase = async (req, res) => {
   }
 };
 
-export default { addCase, getcase };
+export default { addCase, getcase ,verifyCrime};

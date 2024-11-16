@@ -17,6 +17,16 @@ const prisonerSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    Contact_info:{
+      type: Object,
+      required: true,
+      default:{
+        Phone: "",
+      
+        Address:""
+      }
+    },
+    
 
     FIRdate: {
       type: Date,
@@ -31,6 +41,10 @@ const prisonerSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    Complience:{
+      type:String,
+      default:"In Prison"
+    }
     
   },
   { timestamps: true }

@@ -7,4 +7,9 @@ applicationRouter.post('/apply',ApplicationController.apply)
 
 applicationRouter.get('/getapplications',ApplicationController.getStatus)
 
+applicationRouter.post('/accept',ApplicationController.acceptApplication)
+applicationRouter.post('/reject',ApplicationController.RejectApplication)
+
+applicationRouter.post('/verify',ApplicationController.VerifyApplication)
+
 export default applicationRouter

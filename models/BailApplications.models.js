@@ -1,10 +1,7 @@
 import mongoose from "mongoose";
 
 const applicationSchema=new mongoose.Schema({
-    CaseID:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'cases'
-    },
+
     lawyer_id:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Users'

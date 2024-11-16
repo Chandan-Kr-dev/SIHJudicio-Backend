@@ -1,7 +1,7 @@
 import { Prisoner } from "../models/Prisoner.models.js";
 
 const addprisoner=async(req,res)=>{
-    const {Name,Fname,adharnum,firdate,witness,crime}=req.body;
+    const {Name,Fname,adharnum,firdate,Address,Phone,witness,crime}=req.body;
 
     try {
         const prisoner=await Prisoner.findOne({AddharNum:adharnum})
@@ -13,6 +13,10 @@ const addprisoner=async(req,res)=>{
                 Name:Name,
                 FathersName:Fname,
                 AddharNum:adharnum,
+                contact_info:{
+                    Phone:Phone,
+                    Address:Address
+                },
                 FIRDate:firdate,
                 Witness:witness,
                 Crime:crime,
@@ -37,5 +41,6 @@ const getprisoner=async(req,res)=>{
         res.json("Error fetching prisoners")
     }
 }
+
 
 export default {addprisoner,getprisoner}

@@ -18,8 +18,8 @@ const apply = async (req,res) => {
   console.log(req.body);
 
   try {
-    const judge = await Users.findOne({ Name: JudgeName });
-    const Lawyer = await Users.findOne({ Name: LawyerName });
+    const judge = await Users.findOne({ Email: JudgeName });
+    const Lawyer = await Users.findOne({ Email: LawyerName });
 
     if(await applications.findOne({AddharNum:Adharnum})){
       return res.json("Already applied for Bail")
@@ -65,4 +65,50 @@ const getStatus=async(req,res)=>{
     }
 }
 
-export default {apply,getStatus}
+const acceptApplication=async(req,res)=>{
+  const { applicationId } = req.body;
+  console.log(req.body);
+  try {
+    const application=await applications.findByIdAndUpdate(applicationId,{Status: "Accepted"});
+    if(application){
+        res.json("Application accepted successfully");
+    }
+    
+
+  } catch (error) {
+    console.error(error);
+    res.json("Error in accepting application")
+  }
+}
+const RejectApplication=async(req,res)=>{
+  const { applicationId } = req.body;
+  console.log(req.body);
+  try {
+    const application=await applications.findByIdAndUpdate(applicationId,{Status: "Rejected"});
+    if(application){
+        res.json("Application Rejected successfully");
+    }
+    
+
+  } catch (error) {
+    console.error(error);
+    res.json("Error in application")
+  }
+}
+const VerifyApplication=async(req,res)=>{
+  const { applicationId } = req.body;
+  console.log(req.body);
+  try {
+    const application=await applications.findByIdAndUpdate(applicationId,{Status: "Verified"});
+    if(application){
+        res.json("Application Verified successfully");
+    }
+    
+
+  } catch (error) {
+    console.error(error);
+    res.json("Error in application")
+  }
+}
+
+export default {apply,getStatus,acceptApplication,RejectApplication,VerifyApplication}
