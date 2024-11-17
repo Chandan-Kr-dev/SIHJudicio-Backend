@@ -1,7 +1,10 @@
 import mongoose from "mongoose";
 
 const applicationSchema=new mongoose.Schema({
-
+    CrimeCategory_id:{
+        type:String,
+        required:true
+    },
     lawyer_id:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Users'
@@ -10,7 +13,11 @@ const applicationSchema=new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'Users'
     },
-    ProfileInfo:{
+    applicantInfo:{
+        prisoner_id:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'Prisoners'
+        },
         Name: {
             type: String,
             required: true,

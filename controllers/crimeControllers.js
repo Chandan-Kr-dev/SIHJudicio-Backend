@@ -35,10 +35,12 @@ const addCase = async (req, res) => {
 const verifyCrime=async(req,res)=>{
   const {Crimeid}=req.body;
   try {
-    await crimes.findByIdAndUpdate(Crimeid,{Status:"Verified"})
-    .then(()=>{
+    const updatedCrime=await crimes.findByIdAndUpdate(Crimeid,{Status:"Verified"})
+    console.log(updatedCrime)
+
+    if(updatedCrime){
       res.json("Crime verified successfully")
-    })
+    }
   } catch (error) {
     console.error(error.message);
     res.json(error.message);
