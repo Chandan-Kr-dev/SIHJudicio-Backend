@@ -2,6 +2,8 @@ import bcrypt from "bcryptjs";
 import { Users } from "../models/user.models.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import generateToken from "../utils/generateToken.js";
+import { jwtDecode } from "jwt-decode";
 dotenv.config();
 
 const SignUp = async (req, res) => {
@@ -14,7 +16,7 @@ const SignUp = async (req, res) => {
       res.json(`User already exists as ${user.userRole} ... Please Login `);
     } else {
       const hasedpassword = await bcrypt.hash(Password, 10);
-      Users.create({
+      const user = await Users.create({
         UserName: UserName,
         Email: Email,
         profileInfo: {
@@ -22,9 +24,13 @@ const SignUp = async (req, res) => {
         },
         Phone: Phone,
         password: hasedpassword,
-      }).then(() => {
-        res.json("You are signed in successfully..");
       });
+      if (user) {
+        res.json({
+          message: "User registered Succesfully",
+          token: generateToken(user),
+        });
+      }
     }
   } catch (error) {
     console.log(error);
@@ -52,7 +58,7 @@ const SignUpOfficials = async (req, res) => {
     } else {
       const hasedpassword = await bcrypt.hash(Password, 10);
       const hashedLiscensenumber = await bcrypt.hash(Liscensenumber, 5);
-      Users.create({
+      const user = await Users.create({
         Email: Email,
         UserName: UserName,
         Phone: Phone,
@@ -63,9 +69,13 @@ const SignUpOfficials = async (req, res) => {
           AssignedCourt: AssignedCourt,
         },
         userRole: userRole,
-      }).then(() => {
-        res.json(`${userRole} has been signed up successfully..`);
       });
+      if (user) {
+        res.json({
+          message: `${userRole} is signedUp Successfuly`,
+          token: generateToken(user),
+        });
+      }
     }
   } catch (error) {
     console.log(error);
@@ -85,7 +95,11 @@ const login = async (req, res) => {
         if (isMacth) {
           // const token=jwt.sign({id:user._id , role: user.userRole},process.env.JWT_SECRET,{expiresIn : "1h"})
           // res.status(200).json({token})
-          res.json({ message: "Success", user });
+          const decode=jwtDecode("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MzhlM2YyOWNmZmUyMDg3NGMzMzNiYSIsIm5hbWUiOiJSdWRyYTc2NSIsImVtYWlsIjoicnVkcmFAZ21haWwuY29tIiwidXNlclJvbGUiOiJKdWRnZSIsImlhdCI6MTczMTg0Njc0NywiZXhwIjoxNzMxOTMzMTQ3fQ.HbxN-AQjnBLPnQWhC_uR2F-uRcJOMb3n_rfjXHeHGL0")
+          console.log("Nmae : ",decode.name)
+          console.log("email : ",decode.email)
+          console.log("role : ",decode.userRole)
+          res.json({ message: "Success", token: generateToken(user)  });
         } else {
           res.json("Password Incorrect ");
         }
